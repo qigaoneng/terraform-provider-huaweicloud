@@ -3,6 +3,10 @@
 ## 1.90.0 (April 10, 2026)
 
 * **New Resource Source:**
+* 
+* 
+* 
+* 
   + `huaweicloud_cce_autopilot_release` [GH-8709]
   + `huaweicloud_cfw_eip_alarm_whitelist` [GH-9235]
   + `huaweicloud_cfw_eip_all_protection_switch` [GH-9239]

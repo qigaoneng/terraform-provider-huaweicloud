@@ -57,7 +57,7 @@ type AbortMultipartUploadInput struct {
 // InitiateMultipartUploadInput is the input parameter of InitiateMultipartUpload function
 type InitiateMultipartUploadInput struct {
 	ObjectOperationInput
-	HttpHeader
+	ContentType  string
 	EncodingType string
 }
 
@@ -74,17 +74,16 @@ type InitiateMultipartUploadOutput struct {
 
 // UploadPartInput is the input parameter of UploadPart function
 type UploadPartInput struct {
-	Bucket        string
-	Key           string
-	PartNumber    int
-	UploadId      string
-	ContentMD5    string
-	ContentSHA256 string
-	SseHeader     ISseHeader
-	Body          io.Reader
-	SourceFile    string
-	Offset        int64
-	PartSize      int64
+	Bucket     string
+	Key        string
+	PartNumber int
+	UploadId   string
+	ContentMD5 string
+	SseHeader  ISseHeader
+	Body       io.Reader
+	SourceFile string
+	Offset     int64
+	PartSize   int64
 }
 
 // UploadPartOutput is the result of UploadPart function
@@ -158,7 +157,6 @@ type CopyPartInput struct {
 	CopySourceVersionId  string
 	CopySourceRangeStart int64
 	CopySourceRangeEnd   int64
-	CopySourceRange      string
 	SseHeader            ISseHeader
 	SourceSseHeader      ISseHeader
 }

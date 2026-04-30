@@ -77,7 +77,6 @@ var (
 	HW_CBR_DESTINATION_VAULT_ID   = os.Getenv("HW_CBR_DESTINATION_VAULT_ID")   // The destination vault ID.
 
 	HW_VPC_BANDWIDTH_ADDON_PACKAGE_ENABLED = os.Getenv("HW_VPC_BANDWIDTH_ADDON_PACKAGE_ENABLED")
-	HW_VPC_BANDWIDTH_NAME                  = os.Getenv("HW_VPC_BANDWIDTH_NAME")
 	HW_VPC_EIP_POOL_ENABLED                = os.Getenv("HW_VPC_EIP_POOL_ENABLED")
 
 	HW_APIG_DEDICATED_INSTANCE_ID             = os.Getenv("HW_APIG_DEDICATED_INSTANCE_ID")
@@ -114,7 +113,6 @@ var (
 	HW_CNAD_PROJECT_OBJECT_ID = os.Getenv("HW_CNAD_PROJECT_OBJECT_ID")
 
 	HW_OBS_DESTINATION_BUCKET  = os.Getenv("HW_OBS_DESTINATION_BUCKET")
-	HW_OBS_AGENCY_NAME         = os.Getenv("HW_OBS_AGENCY_NAME")
 	HW_OBS_ENDPOINT            = os.Getenv("HW_OBS_ENDPOINT")
 	HW_OBS_OBJECT_STORAGE_PATH = os.Getenv("HW_OBS_OBJECT_STORAGE_PATH")
 	HW_OBS_USER_DOMAIN_NAME1   = os.Getenv("HW_OBS_USER_DOMAIN_NAME1")
@@ -741,13 +739,12 @@ var (
 	// The OBS agency name list of the DWS data source. Using commas (,) to separate multiple names.
 	HW_DWS_OBS_AGENCY_NAMES = os.Getenv("HW_DWS_OBS_AGENCY_NAMES")
 
-	HW_DCS_ACCOUNT_WHITELIST  = os.Getenv("HW_DCS_ACCOUNT_WHITELIST")
-	HW_DCS_INSTANCE_ID        = os.Getenv("HW_DCS_INSTANCE_ID")
-	HW_DCS_BEGIN_TIME         = os.Getenv("HW_DCS_BEGIN_TIME")
-	HW_DCS_END_TIME           = os.Getenv("HW_DCS_END_TIME")
-	HW_DCS_OBS_BUCKET_NAME    = os.Getenv("HW_DCS_OBS_BUCKET_NAME")
-	HW_DCS_BACKUP_ID          = os.Getenv("HW_DCS_BACKUP_ID")
-	HW_DCS_BACKGROUND_TASK_ID = os.Getenv("HW_DCS_BACKGROUND_TASK_ID")
+	HW_DCS_ACCOUNT_WHITELIST = os.Getenv("HW_DCS_ACCOUNT_WHITELIST")
+	HW_DCS_INSTANCE_ID       = os.Getenv("HW_DCS_INSTANCE_ID")
+	HW_DCS_BEGIN_TIME        = os.Getenv("HW_DCS_BEGIN_TIME")
+	HW_DCS_END_TIME          = os.Getenv("HW_DCS_END_TIME")
+	HW_DCS_OBS_BUCKET_NAME   = os.Getenv("HW_DCS_OBS_BUCKET_NAME")
+	HW_DCS_BACKUP_ID         = os.Getenv("HW_DCS_BACKUP_ID")
 
 	HW_ELB_GATEWAY_TYPE = os.Getenv("HW_ELB_GATEWAY_TYPE")
 
@@ -1778,13 +1775,6 @@ func TestAccPreCheckOBS(t *testing.T) {
 func TestAccPreCheckOBSDestinationBucket(t *testing.T) {
 	if HW_OBS_DESTINATION_BUCKET == "" {
 		t.Skip("HW_OBS_DESTINATION_BUCKET must be set for OBS destination tests")
-	}
-}
-
-// lintignore:AT003
-func TestAccPreCheckOBSAgencyName(t *testing.T) {
-	if HW_OBS_AGENCY_NAME == "" {
-		t.Skip("HW_OBS_AGENCY_NAME must be set for OBS tests")
 	}
 }
 
@@ -4227,13 +4217,6 @@ func TestAccPreCheckDcsObsBucketName(t *testing.T) {
 }
 
 // lintignore:AT003
-func TestAccPreCheckDcsBackgroundTaskId(t *testing.T) {
-	if HW_DCS_BACKGROUND_TASK_ID == "" {
-		t.Skip("HW_DCS_BACKGROUND_TASK_ID must be set for the acceptance test")
-	}
-}
-
-// lintignore:AT003
 func TestAccPreCheckDcsBackupId(t *testing.T) {
 	if HW_DCS_BACKUP_ID == "" {
 		t.Skip("HW_DCS_BACKUP_ID must be set for the acceptance test")
@@ -4751,13 +4734,6 @@ func TestAccPreCheckVpcEipPoolEnabled(t *testing.T) {
 func TestAccPreCheckVpcEipBandwidthAddOnPackageEnabled(t *testing.T) {
 	if HW_VPC_BANDWIDTH_ADDON_PACKAGE_ENABLED == "" {
 		t.Skip("HW_VPC_BANDWIDTH_ADDON_PACKAGE_ENABLED must be set for the acceptance test")
-	}
-}
-
-// lintignore:AT003
-func TestAccPreCheckVpcEipBandwidthName(t *testing.T) {
-	if HW_VPC_BANDWIDTH_NAME == "" {
-		t.Skip("HW_VPC_BANDWIDTH_NAME must be set for the acceptance test")
 	}
 }
 

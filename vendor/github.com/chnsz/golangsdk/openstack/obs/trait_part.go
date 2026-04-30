@@ -52,21 +52,6 @@ func (input InitiateMultipartUploadInput) trans(isObs bool) (params map[string]s
 	if input.ContentType != "" {
 		headers[HEADER_CONTENT_TYPE_CAML] = []string{input.ContentType}
 	}
-	if input.ContentEncoding != "" {
-		headers[HEADER_CONTENT_ENCODING_CAMEL] = []string{input.ContentEncoding}
-	}
-	if input.CacheControl != "" {
-		headers[HEADER_CACHE_CONTROL_CAMEL] = []string{input.CacheControl}
-	}
-	if input.ContentDisposition != "" {
-		headers[HEADER_CONTENT_DISPOSITION_CAMEL] = []string{input.ContentDisposition}
-	}
-	if input.ContentLanguage != "" {
-		headers[HEADER_CONTENT_LANGUAGE_CAMEL] = []string{input.ContentLanguage}
-	}
-	if input.HttpExpires != "" {
-		headers[HEADER_EXPIRES_CAMEL] = []string{input.HttpExpires}
-	}
 	params[string(SubResourceUploads)] = ""
 	if input.EncodingType != "" {
 		params["encoding-type"] = input.EncodingType
@@ -77,12 +62,9 @@ func (input InitiateMultipartUploadInput) trans(isObs bool) (params map[string]s
 func (input UploadPartInput) trans(isObs bool) (params map[string]string, headers map[string][]string, data interface{}, err error) {
 	params = map[string]string{"uploadId": input.UploadId, "partNumber": IntToString(input.PartNumber)}
 	headers = make(map[string][]string)
-	setSseHeader(headers, input.SseHeader, true, false, isObs)
+	setSseHeader(headers, input.SseHeader, true, isObs)
 	if input.ContentMD5 != "" {
 		headers[HEADER_MD5_CAMEL] = []string{input.ContentMD5}
-	}
-	if input.ContentSHA256 != "" {
-		setHeaders(headers, HEADER_SHA256, []string{input.ContentSHA256}, isObs)
 	}
 	if input.Body != nil {
 		data = input.Body
@@ -126,10 +108,8 @@ func (input CopyPartInput) trans(isObs bool) (params map[string]string, headers 
 	if input.CopySourceRangeStart >= 0 && input.CopySourceRangeEnd > input.CopySourceRangeStart {
 		setHeaders(headers, HEADER_COPY_SOURCE_RANGE, []string{fmt.Sprintf("bytes=%d-%d", input.CopySourceRangeStart, input.CopySourceRangeEnd)}, isObs)
 	}
-	if input.CopySourceRange != "" {
-		setHeaders(headers, HEADER_COPY_SOURCE_RANGE, []string{input.CopySourceRange}, isObs)
-	}
-	setSseHeader(headers, input.SseHeader, true, false, isObs)
+
+	setSseHeader(headers, input.SseHeader, true, isObs)
 	if input.SourceSseHeader != nil {
 		if sseCHeader, ok := input.SourceSseHeader.(SseCHeader); ok {
 			setHeaders(headers, HEADER_SSEC_COPY_SOURCE_ENCRYPTION, []string{sseCHeader.GetEncryption()}, isObs)

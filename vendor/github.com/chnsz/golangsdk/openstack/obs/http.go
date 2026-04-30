@@ -152,7 +152,7 @@ func (obsClient ObsClient) doAction(action, method, bucketName, objectKey string
 
 	for _, extension := range extensions {
 		if extensionHeader, ok := extension.(extensionHeaders); ok {
-			if _err := extensionHeader(headers, isObs); _err != nil {
+			if _err := extensionHeader(headers, isObs); err != nil {
 				doLog(LEVEL_INFO, fmt.Sprintf("set header with error: %v", _err))
 			}
 		} else {
@@ -195,9 +195,7 @@ func (obsClient ObsClient) getSignedURLResponse(action string, output IBaseModel
 		respError = err
 		resp = nil
 	} else {
-		if logConf.level <= LEVEL_DEBUG {
-			doLog(LEVEL_DEBUG, "Response headers: %s", logResponseHeader(resp.Header))
-		}
+		doLog(LEVEL_DEBUG, "Response headers: %s", logResponseHeader(resp.Header))
 		if resp.StatusCode >= 300 {
 			respError = ParseResponseToObsError(resp, isObs)
 			msg = resp.Status
@@ -354,9 +352,7 @@ func logHeaders(headers map[string][]string, signature SignatureType) {
 		} else if securityToken, isSecurityToken = headers[HEADER_STS_TOKEN_OBS]; isSecurityToken {
 			headers[HEADER_STS_TOKEN_OBS] = []string{"******"}
 		}
-		if logConf.level <= LEVEL_DEBUG {
-			doLog(LEVEL_DEBUG, "Request headers: %s", logRequestHeader(headers))
-		}
+		doLog(LEVEL_DEBUG, "Request headers: %s", logRequestHeader(headers))
 		headers[HEADER_AUTH_CAMEL] = auth
 		if isSecurityToken {
 			if signature == SignatureObs {
@@ -478,11 +474,6 @@ func handleBody(req *http.Request, body io.Reader, listener ProgressListener, tr
 		readerLen, err := GetReaderLen(reader)
 		if err == nil {
 			req.ContentLength = readerLen
-
-			// Support Content-Length in Go for uploads, including zero-length scenarios.
-			if req.Method == http.MethodPut && readerLen == 0 {
-				reader = nil
-			}
 		}
 		if req.ContentLength > 0 {
 			req.Header.Set(HEADER_CONTENT_LENGTH_CAMEL, strconv.FormatInt(req.ContentLength, 10))
@@ -537,9 +528,9 @@ func (obsClient ObsClient) doHTTP(method, bucketName, objectKey string, params m
 
 		handleBody(req, _data, listener, tracker)
 
-		lastRequest = prepareReq(headers, req, lastRequest, obsClient.conf.userAgent)
+		logHeaders(headers, obsClient.conf.signature)
 
-		logHeaders(lastRequest.Header, obsClient.conf.signature)
+		lastRequest = prepareReq(headers, req, lastRequest, obsClient.conf.userAgent)
 
 		// Transfer started
 		event := newProgressEvent(TransferStartedEvent, 0, req.ContentLength)
@@ -559,9 +550,7 @@ func (obsClient ObsClient) doHTTP(method, bucketName, objectKey string, params m
 				break
 			}
 		} else {
-			if logConf.level <= LEVEL_DEBUG {
-				doLog(LEVEL_DEBUG, "resp.StatusCode [%d] resp.Status [%s] Response headers: [%s]", resp.StatusCode, resp.Status, logResponseHeader(resp.Header))
-			}
+			doLog(LEVEL_DEBUG, "Response headers: %s", logResponseHeader(resp.Header))
 			if resp.StatusCode < 300 {
 				event := newProgressEvent(TransferCompletedEvent, tracker.completedBytes, req.ContentLength)
 				publishProgress(listener, event)

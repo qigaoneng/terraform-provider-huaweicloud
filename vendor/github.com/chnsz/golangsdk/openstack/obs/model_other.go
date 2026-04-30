@@ -34,20 +34,12 @@ type CreateSignedUrlOutput struct {
 	ActualSignedRequestHeaders http.Header
 }
 
-// ConditionRange the specifying ranges in the conditions
-type ConditionRange struct {
-	RangeName string
-	Lower     int64
-	Upper     int64
-}
-
 // CreateBrowserBasedSignatureInput is the input parameter of CreateBrowserBasedSignature function.
 type CreateBrowserBasedSignatureInput struct {
-	Bucket      string
-	Key         string
-	Expires     int
-	FormParams  map[string]string
-	RangeParams []ConditionRange
+	Bucket     string
+	Key        string
+	Expires    int
+	FormParams map[string]string
 }
 
 // CreateBrowserBasedSignatureOutput is the result of CreateBrowserBasedSignature function.
